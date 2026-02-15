@@ -1,9 +1,3 @@
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using DirectoryAnalyzer.Core.Models;
-using DirectoryAnalyzer.Core.Services;
 using Xunit;
 
 namespace DirectoryAnalyzer.Tests;

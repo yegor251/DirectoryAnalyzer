@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace DirectoryAnalyzer.Core.Models;
 
 public class DirectoryNode

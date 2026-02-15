@@ -1,7 +1,3 @@
-using System.Collections.Concurrent;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using DirectoryAnalyzer.Core.Models;
 
 namespace DirectoryAnalyzer.Core.Services;

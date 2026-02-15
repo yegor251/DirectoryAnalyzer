@@ -1,4 +1,3 @@
-using System;
 using System.Windows.Input;
 
 namespace DirectoryAnalyzer.App.ViewModels;

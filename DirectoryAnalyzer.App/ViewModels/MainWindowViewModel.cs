@@ -1,10 +1,6 @@
-using System;
 using System.Collections.ObjectModel;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using DirectoryAnalyzer.Core.Models;
-using DirectoryAnalyzer.Core.Services;
 
 namespace DirectoryAnalyzer.App.ViewModels;
 

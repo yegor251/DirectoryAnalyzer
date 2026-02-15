@@ -2,7 +2,6 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using DirectoryAnalyzer.App.ViewModels;
-using DirectoryAnalyzer.Core.Services;
 
 namespace DirectoryAnalyzer.App;
 
