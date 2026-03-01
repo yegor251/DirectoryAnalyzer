@@ -57,7 +57,7 @@ public class DirectoryAnalyzer
 
             Interlocked.Increment(ref pendingWorkItems);
 
-            _semaphore.WaitAsync(cancellationToken).ContinueWith(waitTask =>
+            _semaphore.WaitAsync(cancellationToken).ContinueWith(async waitTask =>
             {
                 if (waitTask.IsCanceled || waitTask.IsFaulted)
                 {
@@ -65,21 +65,19 @@ public class DirectoryAnalyzer
                     return;
                 }
 
-                ThreadPool.QueueUserWorkItem(_ =>
+                try
                 {
-                    try
-                    {
-                        WorkerStarted();
-                        ProcessDirectory(directoryInfo, node, QueueDirectory, cancellationToken);
-                    }
-                    finally
-                    {
-                        WorkerFinished();
-                        _semaphore.Release();
-                        OnWorkItemCompleted();
-                    }
-                });
-            }, CancellationToken.None, TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
+                    WorkerStarted();
+                    await Task.Run(() => ProcessDirectory(directoryInfo, node, QueueDirectory, cancellationToken));
+                }
+                finally
+                {
+                    WorkerFinished();
+                    _semaphore.Release();
+                    OnWorkItemCompleted();
+                }
+            }, CancellationToken.None, TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default)
+            .Unwrap();
         }
 
         QueueDirectory(rootDirectoryInfo, rootNode);
@@ -144,15 +142,7 @@ public class DirectoryAnalyzer
         {
             subdirectories = directoryInfo.GetDirectories();
         }
-        catch (Exception) when (directoryInfo.Exists == false)
-        {
-            return;
-        }
-        catch (UnauthorizedAccessException)
-        {
-            return;
-        }
-        catch (IOException)
+        catch (Exception ex) when (ex is UnauthorizedAccessException or IOException || !directoryInfo.Exists)
         {
             return;
         }
